@@ -12,7 +12,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["css/*.css", "js/*.js"],
+      "resources": ["css/*.css", "js/*.js", "js/*.js.map"],
       "matches": ["<all_urls>"]
     }
   ],
@@ -20,15 +20,14 @@
     {
       "matches": ["<all_urls>"],
       "js": [
-        "content-script.js",
-        "app.js"
+        "js/app.js"
       ],
       "css": [
-        "style.css"
+        "css/style.css"
       ]
     }
   ],
   "background": {
-    "service_worker": "service-worker.js"
+    "service_worker": "js/background.js"
   }
 }

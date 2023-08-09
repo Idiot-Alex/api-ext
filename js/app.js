@@ -1,12 +1,45 @@
 (function(){
-  const app = document.getElementById('hotstrip-appExt');
+  // start
+  initAjaxHook();
+  if (document.readyState !== "loading") {
+    onReady(); // Or setTimeout(onReady, 0); if you want it consistently async
+  } else {
+    document.addEventListener("DOMContentLoaded", onReady);
+  }
+
+  chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.message === "request") {
+      console.log('request', request.data);
+    }
+    if (request.message === "response") {
+      console.log('response', request.data);
+    }
+    sendResponse({ message: "Hi from content script" })
+  });
+
   function onReady() {
     console.log('DOM is ready!');
+    initApp();
     createPanel();
     createSwitch();
   }
 
+  function initApp() {  
+    // init appExt div
+    const app = document.createElement("div");
+    app.setAttribute("id", "hotstrip-appExt");
+    document.body.appendChild(app);
+
+    // init style
+    const link = document.createElement("link");
+    link.setAttribute("rel", "stylesheet");
+    link.setAttribute("type", "text/css");
+    link.setAttribute("href", "css/style.css");
+    document.head.appendChild(link);
+  }
+
   function createSwitch() {
+    const app = document.getElementById('hotstrip-appExt');
     // 创建 div 元素
     const appSwitch = document.createElement('div');
     appSwitch.id = 'hotstrip-appSwitch';
@@ -58,6 +91,7 @@
   }
 
   function createPanel() {
+    const app = document.getElementById('hotstrip-appExt');
     // create a div element
     const appPanel = document.createElement('div');
     appPanel.id = 'hotstrip-appPanel';
@@ -70,10 +104,20 @@
     app.appendChild(appPanel);
   }
 
+  function initAjaxHook() {
+    const ajaxHookScript = document.createElement("script");
+    ajaxHookScript.src = chrome.runtime.getURL("js/ajaxhook.min.js");
+    document.head.appendChild(ajaxHookScript);
 
-  if (document.readyState !== "loading") {
-    onReady(); // Or setTimeout(onReady, 0); if you want it consistently async
-  } else {
-    document.addEventListener("DOMContentLoaded", onReady);
+    const sdkScript = document.createElement("script");
+    sdkScript.src = chrome.runtime.getURL("js/sdk.js");
+    document.head.appendChild(sdkScript);
+
+    console.log('ajaxHook is ready', window.ah)
+    // const ah = window.ah;
+    // // 发送消息到 service worker
+    chrome.runtime.sendMessage({type: 'init-ajax-hook'}, response => {
+      console.log('收到来自 service worker 的回复：', response);
+    });
   }
 })();
