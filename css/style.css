@@ -1,0 +1,101 @@
+/* css */
+#hotstrip-appSwitch {
+  position: fixed;
+  right: 15px;
+  top: 15px;
+  z-index: 99999;
+}
+
+#hotstrip-checkbox {
+  display: none;
+}
+
+#hotstrip-label {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition-duration: .5s;
+}
+
+.hotstrip-toggle {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition-duration: .5s;
+}
+
+.hotstrip-bars {
+  width: 100%;
+  height: 4px;
+  background-color: rgb(176, 92, 255);
+  border-radius: 4px;
+}
+
+#hotstrip-bar2 {
+  transition-duration: .8s;
+}
+
+#hotstrip-bar1,#hotstrip-bar3 {
+  width: 70%;
+}
+
+#hotstrip-checkbox:checked + .hotstrip-toggle .hotstrip-bars {
+  position: absolute;
+  transition-duration: .5s;
+}
+
+#hotstrip-checkbox:checked + .hotstrip-toggle #hotstrip-bar2 {
+  transform: scaleX(0);
+  transition-duration: .5s;
+}
+
+#hotstrip-checkbox:checked + .hotstrip-toggle #hotstrip-bar1 {
+  width: 100%;
+  transform: rotate(45deg);
+  transition-duration: .5s;
+}
+
+#hotstrip-checkbox:checked + .hotstrip-toggle #hotstrip-bar3 {
+  width: 100%;
+  transform: rotate(-45deg);
+  transition-duration: .5s;
+}
+
+#hotstrip-checkbox:checked + .hotstrip-toggle {
+  transition-duration: .5s;
+  transform: rotate(180deg);
+}
+
+#hotstrip-appPanel {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 30vw;
+  height: 100vh;
+  background-color: #efefef;
+}
+
+.hotstrip-panel {
+  z-index: -1;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.hotstrip-panel.hotstrip-panel-show {
+  z-index: 99999;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .2s ease-in-out, transform .2s ease-in-out;
+}
